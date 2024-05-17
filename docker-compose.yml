@@ -1,0 +1,52 @@
+# контейнеры бэкенда
+
+version: '3.8'
+
+services:
+
+  postgres:
+    container_name: postgres
+    image: postgres
+    ports:
+      - 5432:5432 # доступ к БД извне по порту 5430
+    restart: always
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      # - POSTGRES_HOST=postgres
+      # - POSTGRES_NAME=postgres
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+  
+  pgadmin:
+    container_name: pgadmin
+    # build:
+    #   context : ./postgres
+    #   dockerfile : Dockerfile
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: nk260an@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: jEm*pHi3JWe%
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    volumes:
+      - pgadmin_volume:/var/lib/pgadmin
+      - ./postgres/servers.json:/pgadmin4/servers.json # provosioning, при входе в pgadmin сервер уже будет подключен
+    depends_on:
+      - postgres
+    
+volumes:
+  postgres_volume:
+  static_volume:
+  vue_dist:
+  pgadmin_volume:
+
+# внешняя сеть контейнеров, сначала нужно запустить контейнеры, которые
+# создают сеть (docker-compose.nginx_certbot.yml)
+# а затем запускать эти контейнеры
+# networks:
+#   nginx-network:
+#     name: nginx-network
+#     external: true

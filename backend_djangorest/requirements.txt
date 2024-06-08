@@ -1,0 +1,17 @@
+django
+djangorestframework
+markdown
+django-filter
+gunicorn
+
+# для Windows и -slim контейнера
+# psycopg2-binary
+
+# для alpine
+# psycopg2
+
+psycopg[binary,pool]
+
+django-cors-headers
+django-rest-swagger
+faker

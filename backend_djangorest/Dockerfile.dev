@@ -1,0 +1,36 @@
+FROM python:3.11-slim
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+ENV GROUPNAME=djangogroup
+ENV USERNAME=djangouser
+
+# RUN addgroup $GROUPNAME && adduser $USERNAME $GROUPNAME 
+
+
+
+ENV HOME=/home/$USERNAME
+ENV APP_HOME=$HOME/backend
+# RUN mkdir $APP_HOME
+# WORKDIR $APP_HOME
+
+RUN addgroup $GROUPNAME
+RUN useradd -rm -d $APP_HOME -G $GROUPNAME $USERNAME
+RUN chown -R $USERNAME:$GROUPNAME $APP_HOME
+WORKDIR $APP_HOME
+
+# WORKDIR /backend
+COPY . $APP_HOME
+RUN apt-get update
+RUN pip install -U pip
+RUN pip install --no-cache -r requirements.txt
+RUN mkdir $APP_HOME/staticfiles
+RUN python manage.py collectstatic --noinput
+# RUN cd /backend && python manage.py shell
+# < ./BusinessAPI/gentestdata.py
+
+
+# change to the app user
+USER $USERNAME
+
+EXPOSE 80 443

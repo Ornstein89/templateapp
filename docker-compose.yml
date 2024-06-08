@@ -1,42 +1,94 @@
 # контейнеры бэкенда
 
-version: '3.8'
-
 services:
 
-  postgres:
-    container_name: postgres
-    image: postgres
-    ports:
-      - 5432:5432 # доступ к БД извне по порту 5430
+  frontend_service:
+    container_name: frontend_container
+    image: frontend_image
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - vue_dist:/frontend/dist
+  postgres_service:
+    image: postgres_image
+    build:
+      context: ./database
+      dockerfile: Dockerfile.dev
+    container_name: postgres_container
     restart: always
     volumes:
-      - ./data/db:/var/lib/postgresql/data
-    environment:
-      # - POSTGRES_HOST=postgres
-      # - POSTGRES_NAME=postgres
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-  
-  pgadmin:
-    container_name: pgadmin
-    # build:
-    #   context : ./postgres
-    #   dockerfile : Dockerfile
+      - postgres_volume:/var/lib/postgresql/data
+      # - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      # - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    env_file:
+      - .env.dev
+  pgadmin_service:
+    container_name: pgadmin_container
     image: dpage/pgadmin4
     restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: nk260an@gmail.com
-      PGADMIN_DEFAULT_PASSWORD: jEm*pHi3JWe%
+    env_file:
+      - .env.dev
     ports:
-      - "${PGADMIN_PORT:-5050}:80"
+      - 5050:80 # вывести в переменную
     volumes:
       - pgadmin_volume:/var/lib/pgadmin
-      - ./postgres/servers.json:/pgadmin4/servers.json # provosioning, при входе в pgadmin сервер уже будет подключен
     depends_on:
-      - postgres
-    
+      - postgres_service
+
+  nginx_service:
+    image: nginx_image
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile.dev
+    container_name: nginx_container
+    restart: unless-stopped
+  #   # expose:
+    #   - 8000
+    ports:
+      - 80:80
+      # - 443:443
+  #     # - 8000:8000
+    volumes:
+      - static_volume:/static
+      # - ./backend/media:/media
+      - vue_dist:/dist
+    depends_on:
+      - backend_service
+      - frontend_service
+
+  backend_service:
+    image: backend_image
+    container_name: backend_container
+    restart: always
+    command: gunicorn backend_djangorest.wsgi:application --bind 0.0.0.0:80
+    env_file:
+      - .env.dev
+    volumes:
+      - static_volume:/home/djangouser/backend/staticfiles
+    depends_on:
+      - postgres_service
+      - migration_service
+  # на основе https://stackoverflow.com/a/44283611/12691808
+  migration_service:
+    image: backend_image
+    container_name: migration_container
+    build:
+      context: ./backend_djangorest
+      dockerfile: Dockerfile.dev
+    env_file:
+      - .env.dev
+    command: >
+            sh -c "
+            python manage.py makemigrations mainapp  --noinput &&
+            python manage.py makemigrations  --noinput &&
+            python manage.py migrate --noinput
+            "
+    depends_on:
+      - postgres_service
+    volumes:
+      - static_volume:/home/djangouser/backend/staticfiles
+
 volumes:
   postgres_volume:
   static_volume:

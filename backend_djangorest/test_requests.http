@@ -1,0 +1,49 @@
+### файл для тестирования REST API через REST Client VS Code
+# VS Marketplace Link: https://marketplace.visualstudio.com/items?itemName=humao.rest-client
+
+@hostname=localhost
+@port=8000
+@token=768b0776ea48c591ef93896fbd7c7aad0265a6ca
+
+### /api/auth - получение токена
+POST http://{{hostname}}:{{port}}/api/login/ HTTP/1.1
+content-type: application/json
+
+{
+    "username":"username2",
+    "password":"pass2"
+}
+
+
+### пример GET-запроса
+GET http://{{hostname}}:{{port}}/api/publications HTTP/1.1
+content-type: application/json
+Authorization: Token {{token}}
+
+
+### пример POST-запроса
+GET http://{{hostname}}:{{port}}/api/publication/150/ HTTP/1.1
+Authorization: Token {{token}}
+content-type: application/json
+
+###
+
+### пример POST-запроса
+GET http://{{hostname}}:{{port}}/api/delpublication/204/ HTTP/1.1
+Authorization: Token {{token}}
+content-type: application/json
+
+###
+
+### пример POST-запроса
+POST http://{{hostname}}:{{port}}/api/newpublication/ HTTP/1.1
+Authorization: Token {{token}}
+content-type: application/json
+
+{
+    "author" : 16,
+    "datetime" : "2024-06-03T12:00:00Z",
+    "text" : "text text text",
+    "title" : "Title",
+    "image":"https://cataas.com/cat"
+}

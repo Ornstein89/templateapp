@@ -1,0 +1,5 @@
+FROM nginx:latest
+
+# COPY default.conf /etc/nginx/templates/conf.d/default.conf.template
+
+ENV TZ=UTC

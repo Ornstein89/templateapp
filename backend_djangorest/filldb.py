@@ -39,8 +39,8 @@ def generatePublications():
             newpub = Publication()
             newpub.datetime = fk.date_time_this_month(tzinfo=timezone.utc)
             newpub.author = User.objects.order_by("?").first()
-            newpub.title = fk.paragraph(nb_sentences=5)
-            newpub.caption = fk.sentence(nb_words=5)
+            newpub.text = fk.paragraph(nb_sentences=5)
+            newpub.title = fk.sentence(nb_words=5)
             newpub.image = "https://cataas.com/cat"
             newpub.save()
 

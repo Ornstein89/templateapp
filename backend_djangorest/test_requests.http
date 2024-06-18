@@ -3,15 +3,15 @@
 
 @hostname=localhost
 @port=8000
-@token=768b0776ea48c591ef93896fbd7c7aad0265a6ca
+@token=077bd34bfe60b7b1ae3444425a29499ea1e7b111
 
 ### /api/auth - получение токена
 POST http://{{hostname}}:{{port}}/api/login/ HTTP/1.1
 content-type: application/json
 
 {
-    "username":"username2",
-    "password":"pass2"
+    "username":"admin",
+    "password":"praSwu70LqaS"
 }
 
 

@@ -13,7 +13,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY',
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', default=True)
 
-ALLOWED_HOSTS = [ipadd.strip() for ipadd in os.environ.get('DJANGO_ALLOWED_HOSTS', default='0.0.0.0').split(',')]
+ALLOWED_HOSTS = [ipadd.strip() for ipadd in os.environ.get('DJANGO_ALLOWED_HOSTS', default='127.0.0.1, localhost, 0.0.0.0').split(',')]
 
 INSTALLED_APPS = [
     'django.contrib.admin',

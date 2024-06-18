@@ -7,7 +7,7 @@
       <!-- TODO вписать лого в v-app-bar не указывая max-width и др. величины в пикселях -->
       <!-- <v-img src="favicon.png" max-width="50"></v-img> -->
       <v-app-bar-title justify-start class="ml-2">
-        <h2 justify-start>Шаблонное веб-приложение</h2>
+        <h2 justify-start>Блог</h2>
       </v-app-bar-title>
 
       <v-spacer></v-spacer>
@@ -18,14 +18,15 @@
           mdi-account-circle
         </v-icon>
       </v-avatar>
-      <p>{{ $store.state.user ? $store.state.user.name : "" }}</p>
+      <!-- <p>{{ $store.state.user ? $store.state.user.name : "" }}</p> -->
       <v-divider class="mx-1" vertical></v-divider>
-      <v-btn class="ml-2" outlined @click="logout">Выход</v-btn>
+      <v-btn v-if="$store.state.token" class="ml-2" outlined @click="logout">Выход</v-btn>
     </v-app-bar>
 
     <!-- опция "app" растягивает drawer по кромке экрана,и он не мешает раскладке main -->
     <v-navigation-drawer
       :mini-variant.sync="is_drawer_mini"
+      v-model="drawer"
       width="180"
       app
       clipped
@@ -89,7 +90,7 @@
     </v-main>
 
     <v-footer app>
-      Page footer
+      
     </v-footer>
 </v-app>
 </template>
@@ -105,13 +106,14 @@ export default {
       ],
       selected_nav_link : 0,
       is_drawer_mini : false,
+      drawer:false,
     }   
   },
 
   methods: {
     logout(){
-      this.$store.commit("setToken", null);
-      this.$store.commit("setUser", null);
+      this.$store.state.token = null;
+      // this.$store.commit("setUser", null);
       this.$router.replace({ name: "LoginView" });
     },
   },

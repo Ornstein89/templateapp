@@ -79,14 +79,14 @@ export default {
     // в случае, если страница отобразилась по ошибке
     // или пользователь пытается окрыть страницу по url
     // и он уже залогинен - перейти на View приложения
-    if(this.$store.state.token && this.$store.state.username){
+    if(this.$store.state.token){
       this.$router.replace({name:"DataView"});
     }
   },
 
   methods:{
     login(){
-      /*axios.post("/api/auth",
+      axios.post("/api/login/",
                   { username:this.username,
                     password:this.password } )
       .then(response => {
@@ -100,17 +100,17 @@ export default {
         axios.defaults.headers.common['Authorization'] = "Token "+ tmp_token;
 
         // в финале - покинуть страницу авторизации
-        this.$router.replace({name:"MainPanel"});
+        this.$router.replace({name:"DataView"});
       })
       .catch(error => {
         this.$emit('showerror', error);
-      })*/
+      })
 
-      { //TODO это - заглушка, токен должен запрашиваться с сервера
-        this.$store.commit('setToken', "0123456789012345678901234567890123456789");
-        this.$store.commit('setUser', {name:this.username, lastname:"lastname"});
-        this.$router.replace({name:"DataView"});
-      }
+      // { //TODO это - заглушка, токен должен запрашиваться с сервера
+      //   this.$store.commit('setToken', "0123456789012345678901234567890123456789");
+      //   this.$store.commit('setUser', {name:this.username, lastname:"lastname"});
+      //   this.$router.replace({name:"DataView"});
+      // }
       
     }
   }

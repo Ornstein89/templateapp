@@ -6,7 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     token: null, // АУТЕНТИФИКАЦИЯ
-    user: null, // АУТЕНТИФИКАЦИЯ
+    // user: null, // АУТЕНТИФИКАЦИЯ
 
     // error_show: false,
     // error_string: "",
@@ -14,10 +14,10 @@ export default new Vuex.Store({
     // selected_language:"en", // если в <AppBar> выбор языка
   },
   getters: {},
-  //    getToken(state) { // АУТЕНТИФИКАЦИЯ
-  //        console.log("getToken() emerged");
-  //        return state.token;
-  //    },
+     getToken(state) { // АУТЕНТИФИКАЦИЯ
+         console.log("getToken() emerged");
+         return state.token;
+     },
   //    getUser(state) { // АУТЕНТИФИКАЦИЯ
   //        return state.user;
   //    },
@@ -31,9 +31,9 @@ export default new Vuex.Store({
           if (localStorage.getItem('token')) {  // АУТЕНТИФИКАЦИЯ
               state.token = localStorage.token;
           }
-          if (localStorage.getItem('user')) { // АУТЕНТИФИКАЦИЯ
-              state.user = JSON.parse(localStorage.user);
-          }
+        //   if (localStorage.getItem('username')) { // АУТЕНТИФИКАЦИЯ
+        //       state.user = JSON.parse(localStorage.user);
+        //   }
       },
 
       // набор set-методов для сохранения полей vuex в localstorage
@@ -43,10 +43,10 @@ export default new Vuex.Store({
           localStorage.setItem("token", data); // простые типы можно сохранять через setItem
 
       },
-      setUser(state, data) { // АУТЕНТИФИКАЦИЯ
-          state.user = data;
-          localStorage.setItem("user", JSON.stringify(data)); // объекты можно сохранять, сериализовав в JSON
-      },
+    //   setUser(state, data) { // АУТЕНТИФИКАЦИЯ
+    //       state.user = data;
+    //       localStorage.setItem("user", JSON.stringify(data)); // объекты можно сохранять, сериализовав в JSON
+    //   },
   },
   actions: {
 

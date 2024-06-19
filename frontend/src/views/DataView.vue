@@ -59,13 +59,10 @@
             :key="i"
           >
             <v-list-item-avatar>
-              <!-- <v-lazy> -->
                 <v-img
                   lazy-src="https://cataas.com/cat/close?type=small"
                   :src="`https://cataas.com/cat/close?type=small&cache=${i}`"
                   ></v-img>
-              <!-- </v-lazy> -->
-               asfdasf
               
             </v-list-item-avatar>
 

@@ -9,9 +9,11 @@ Vue.config.productionTip = false
 
 Vue.prototype.$http = Axios;
 // Vue.prototype.$http.defaults.baseURL = 'http://localhost:8000/';
-const token = localStorage.getItem('token')
-if (token) {
-    Vue.prototype.$http.defaults.headers.common['Authorization'] = 'Token ' + token
+// const token = localStorage.getItem('token')
+if (store.state.token!=null) {
+  Vue.prototype.$http.defaults.headers.common['Authorization'] = 'Token ' + store.state.token;
+}else{
+  Vue.prototype.$http.defaults.headers.common['Authorization'] = null;
 }
 
 

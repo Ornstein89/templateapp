@@ -50,8 +50,8 @@ services:
       # - 443:443
   #     # - 8000:8000
     environment:
-      - NGINX_SERVER_NAME=127.0.0.1
-      - NGINX_HOST="localhost"
+      - NGINX_SERVER_NAME=87.242.119.86
+      - NGINX_HOST=87.242.119.86
       - NGINX_PORT=80
     volumes:
       # - ./nginx/templates:/etc/nginx/templates
@@ -72,8 +72,8 @@ services:
     ports:
       - 81:80
     environment:
-      - NGINX_SERVER_NAME=127.0.0.1
-      - NGINX_HOST="localhost"
+      - NGINX_SERVER_NAME=87.242.119.86
+      - NGINX_HOST=87.242.119.86
       - NGINX_PORT=80
     volumes:
       - ./nginx/templates:/etc/nginx/templates

@@ -79,7 +79,7 @@ export default {
     // в случае, если страница отобразилась по ошибке
     // или пользователь пытается окрыть страницу по url
     // и он уже залогинен - перейти на View приложения
-    if(this.$store.state.token){
+    if(this.$store.state.token!=null){
       this.$router.replace({name:"DataView"});
     }
   },
@@ -93,16 +93,19 @@ export default {
         const tmp_token = response.data.token;
         if(tmp_token && tmp_token.length==40){ // проверка формата токена
           this.$store.commit('setToken', tmp_token);
+          axios.defaults.headers.common['Authorization'] = "Token "+ tmp_token;
+          this.$router.replace({name:"DataView"});
         }
-        this.$store.commit('setUser', this.user);
+        // this.$store.commit('setUser', this.user);
 
         // токен авторизации - в постоянные заголовки API-запросов
-        axios.defaults.headers.common['Authorization'] = "Token "+ tmp_token;
+        
 
         // в финале - покинуть страницу авторизации
-        this.$router.replace({name:"DataView"});
+        
       })
       .catch(error => {
+        this.$store.commit('setToken', null);
         this.$emit('showerror', error);
       })
 
